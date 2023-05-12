@@ -14,7 +14,7 @@ class GifPage extends StatelessWidget {
         backgroundColor: Colors.black,
         actions: [
           IconButton(
-            icon: Icon(Icons.share),
+            icon: const Icon(Icons.share),
             onPressed: () {
               Share.share(gifData["images"]["fixed_height"]["url"]);
             },

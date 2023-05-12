@@ -33,10 +33,6 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-
-    _getGifs().then((map) {
-      print(map);
-    });
   }
 
   @override
@@ -54,11 +50,11 @@ class _HomePageState extends State<HomePage> {
           Padding(
             padding: const EdgeInsets.all(10),
             child: TextField(
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                   labelText: "Pesquise Aqui!",
                   labelStyle: TextStyle(color: Colors.white),
                   border: OutlineInputBorder()),
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.white,
                 fontSize: 18,
               ),
@@ -78,7 +74,7 @@ class _HomePageState extends State<HomePage> {
                 switch (snapshot.connectionState) {
                   case ConnectionState.waiting:
                   case ConnectionState.none:
-                    return Container(
+                    return const SizedBox(
                       width: 200,
                       height: 200,
                       child: Align(
@@ -91,10 +87,11 @@ class _HomePageState extends State<HomePage> {
                       ),
                     );
                   default:
-                    if (snapshot.hasError)
+                    if (snapshot.hasError) {
                       return Container();
-                    else
+                    } else {
                       return _createGifsTable(context, snapshot);
+                    }
                 }
               },
             ),
@@ -114,15 +111,15 @@ class _HomePageState extends State<HomePage> {
 
   Widget _createGifsTable(BuildContext context, AsyncSnapshot snapshot) {
     return GridView.builder(
-      padding: EdgeInsets.all(10),
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+      padding: const EdgeInsets.all(10),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
         crossAxisSpacing: 10,
         mainAxisSpacing: 10,
       ),
       itemCount: _getcount(snapshot.data['data']),
       itemBuilder: (context, index) {
-        if (_search == null || index < snapshot.data['data'].length)
+        if (_search == null || index < snapshot.data['data'].length) {
           return GestureDetector(
             child: FadeInImage.memoryNetwork(
                 placeholder: kTransparentImage,
@@ -139,23 +136,21 @@ class _HomePageState extends State<HomePage> {
               Share.share(snapshot.data['data'][index]['images']['fixed_height']['url']);
             },
           );
-        else {
-          return Container(
-            child: GestureDetector(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.add, color: Colors.white, size: 70,),
-                  Text('Carregar mais...',
-                    style: TextStyle(color: Colors.white, fontSize: 22),)
-                ],
-              ),
-              onTap: () {
-                setState(() {
-                  _offset += 19;
-                });
-              },
+        } else {
+          return GestureDetector(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: const [
+                Icon(Icons.add, color: Colors.white, size: 70,),
+                Text('Carregar mais...',
+                  style: TextStyle(color: Colors.white, fontSize: 22),)
+              ],
             ),
+            onTap: () {
+              setState(() {
+                _offset += 19;
+              });
+            },
           );
         }
       },
